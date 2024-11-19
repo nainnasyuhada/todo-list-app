@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-
 import { useTodoStore } from "../../stores/todo";
 import { TrashIcon, ExclamationCircleIcon } from "@heroicons/react/24/outline";
-import { XMarkIcon } from "@heroicons/react/24/solid";
 
 export const DeleteTodo: React.FC<{ id: number }> = ({ id }) => {
   const [isOpen, setIsOpen] = useState(false);
