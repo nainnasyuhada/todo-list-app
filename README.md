@@ -74,3 +74,8 @@ The to-do list is automatically sorted by status:
 	2.	IN_PROGRESS
 	3.	COMPLETED
 	4.	CANCELLED
+
+### Table Pagination
+
+The to-do list supports pagination, with a limit of 10 records displayed per page.
+Navigation buttons allow users to view additional pages of to-dos.
