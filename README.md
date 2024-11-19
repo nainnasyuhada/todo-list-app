@@ -1,46 +1,76 @@
-# Getting Started with Create React App
+# To-Do List App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A feature-rich To-Do List application built with ReactJS and TypeScript, styled with Tailwind CSS, and utilizing Zustand for state management with persistence.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## Project Setup
 
-### `npm start`
+### Requirements
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- Node.js
+- npm
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Steps to Set Up
 
-### `npm test`
+1. Clone the repository:
+   git clone https://github.com/nainnasyuhada/todo-list-app.git
+   cd todo-list-app
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+2. Install dependencies:
+   npm install
 
-### `npm run build`
+3. Run the project:
+   npm run start
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+4. Open your browser and navigate to:
+   http://localhost:3000 
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## About The Project
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+The To-Do List App helps users efficiently manage their tasks by adding, editing, and deleting to-dos with rich functionality and a user-friendly interface.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Overview
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+The To-Do List App helps users efficiently manage their tasks by adding, editing, and deleting to-dos with rich functionality and a user-friendly interface.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Key Technologies
 
-## Learn More
+- ReactJS with TypeScript: For building the app with strongly-typed components.
+- Tailwind CSS: For styling the application with modern and responsive designs.
+- Zustand: For state management due to its lightweight execution and persistent state functionality using local storage.
+- React Hook Form: For managing and validating form inputs
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
+
+## Features and Functionality
+
+### Add To-Do
+
+Users can create a new to-do by entering a title and description.
+
+### View To-Do List
+
+The to-do list is displayed in a table, showing:
+Status, Title, Description, and Action buttons (Edit/Delete)
+
+### View To-Do Details
+
+Clicking on a to-do displays its full details, including:
+Title, Description, Created Date-Time, Updated Date-Time, and Status
+
+### Edit or Delete To-Dos
+
+Editing and deleting are restricted to to-dos with the status “TO_DO” or “IN_PROGRESS”.
+
+### Auto-Sorted To-Do List
+
+The to-do list is automatically sorted by status:
+	1.	TO_DO
+	2.	IN_PROGRESS
+	3.	COMPLETED
+	4.	CANCELLED
