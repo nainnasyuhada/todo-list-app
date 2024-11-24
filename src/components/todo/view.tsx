@@ -1,16 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { Todo, useTodoStore } from "../../stores/todo";
 import { DeleteTodo } from "./delete";
-import { EditTodo } from "./edit";
+import { EditTodo, statusList } from "./edit";
 import Moment from "react-moment";
 import { DocumentPlusIcon } from "@heroicons/react/24/outline";
 import { AddTodo } from "./add";
+
+interface SearchInputs {
+  title: string | null;
+  status: Todo["status"] | "ALL";
+}
 
 const StatusBadge = ({ status }: { status: string }) => {
   let text = "";
   let style = "";
 
   switch (status) {
+    case "ALL":
+      text = "All";
+      style = "bg-white text-gray-900";
+      break;
     case "TO_DO":
       text = "To Do";
       style = "bg-gray-100 text-gray-800";
@@ -45,6 +54,14 @@ export const ViewTodo: React.FC = () => {
   const [selectedPage, setSelectedPage] = useState<number>(1);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
+  const [statuses, setStatuses] = useState<{ label: string; value: string }[]>([
+    { label: "All", value: "ALL" },
+    ...statusList,
+  ]);
+  const [filterParams, setFilterParams] = useState<SearchInputs>({
+    title: null,
+    status: "ALL",
+  });
   const openModal = (todo: Todo) => {
     setIsOpen(true);
     setSelectedTodo(todo);
@@ -77,21 +94,102 @@ export const ViewTodo: React.FC = () => {
     },
   ];
 
-  useEffect(() => {
-    setTotalPage(Math.ceil(todoList.length / pageLimit));
-  }, [todoList]);
-
   const handlePageChange = (page: number) => {
     setSelectedPage(page);
   };
 
-  const paginatedTodos = todoList.slice(
-    (selectedPage - 1) * pageLimit,
-    selectedPage * pageLimit
-  );
+  const [paginatedTodos, setPaginatedTodos] = useState<Todo[]>(todoList);
+  useEffect(() => {
+    let filteredTodos = todoList;
+
+    if (filterParams.status !== "ALL") {
+      filteredTodos = filteredTodos.filter(
+        (todo) => todo.status === filterParams.status
+      );
+    }
+
+    if (filterParams.title !== null) {
+      filteredTodos = filteredTodos.filter((todo) =>
+        todo.title.toLowerCase().includes(filterParams.title!.toLowerCase())
+      );
+    }
+
+    setPaginatedTodos(filteredTodos);
+    setTotalPage(Math.ceil(filteredTodos.length / pageLimit));
+  }, [todoList, filterParams]);
 
   return (
     <>
+      <form className="flex items-center gap-4 mb-5 xs:flex-col xs:gap-0 xs:items-start">
+        {/* Search */}
+        <>
+          <label
+            htmlFor="default-search"
+            className="block text-sm font-medium text-gray-500"
+          >
+            Search Title
+          </label>
+          <div className="relative w-full">
+            <div className="absolute  inset-y-0 start-0 flex items-center p-2.5 pointer-events-none">
+              <svg
+                className="w-4 h-4 text-gray-500"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                />
+              </svg>
+            </div>
+            <input
+              type="search"
+              id="default-search"
+              className="block w-full p-2.5  text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50  focus:border-blue-500 "
+              placeholder="Enter keyword"
+              style={{ paddingLeft: "36px" }}
+              onChange={(e) => {
+                setFilterParams({
+                  ...filterParams,
+                  title: e.target.value,
+                });
+              }}
+            />
+          </div>
+        </>
+
+        {/* Filter */}
+        <div className="w-1/2 flex ">
+          <label
+            htmlFor="default-search"
+            className="block text-sm font-medium text-gray-500"
+          >
+            Filter Status
+          </label>
+          <select
+            id="status"
+            className="block w-full p-2.5 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+            onChange={(e) => {
+              setFilterParams({
+                ...filterParams,
+                status: e.target.value as Todo["status"],
+              });
+            }}
+          >
+            {statuses.map((status) => (
+              <option key={status.value} value={status.value}>
+                <StatusBadge status={status.value} />
+              </option>
+            ))}
+          </select>
+        </div>
+      </form>
+
       {/* Table */}
       <div className="relative overflow-x-auto">
         <table className="w-full text-sm text-left rtl:text-right shadow-md sm:rounded-lg table-auto">
@@ -165,11 +263,11 @@ export const ViewTodo: React.FC = () => {
               Showing{" "}
               <span className="font-semibold text-gray-900 ">
                 {(selectedPage - 1) * pageLimit + 1}-
-                {Math.min(selectedPage * pageLimit, todoList.length)}
+                {Math.min(selectedPage * pageLimit, paginatedTodos.length)}
               </span>{" "}
               of{" "}
               <span className="font-semibold text-gray-900 ">
-                {todoList.length}
+                {paginatedTodos.length}
               </span>
             </span>
             <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">

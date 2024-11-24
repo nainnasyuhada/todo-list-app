@@ -3,7 +3,7 @@ import { PencilIcon } from "@heroicons/react/24/outline";
 import { Todo, useTodoStore } from "../../stores/todo";
 import { useForm, SubmitHandler } from "react-hook-form";
 
-const statusList = [
+export const statusList = [
   { label: "To Do", value: "TO_DO" },
   { label: "In Progress", value: "IN_PROGRESS" },
   { label: "Completed", value: "COMPLETED" },
@@ -173,7 +173,9 @@ export const EditTodo: React.FC<{ data: Todo }> = ({ data }) => {
                     Object.keys(errors).length > 0 ||
                     !watch("title") ||
                     !watch("desc") ||
-                    !watch("status")
+                    !watch("status") ||
+                    (watch("title") === data.title &&
+                      watch("desc") === data.desc)
                   }
                   className="text-white bg-blue-500 w-full rounded p-2 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
                 >

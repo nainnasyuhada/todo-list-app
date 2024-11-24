@@ -11,7 +11,7 @@ type FormInputs = {
 export const AddTodo: React.FC = () => {
   const {
     reset,
-    register,
+  register,  
     handleSubmit,
     formState: { errors },
     watch,
