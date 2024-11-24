@@ -175,7 +175,8 @@ export const EditTodo: React.FC<{ data: Todo }> = ({ data }) => {
                     !watch("desc") ||
                     !watch("status") ||
                     (watch("title") === data.title &&
-                      watch("desc") === data.desc)
+                      watch("desc") === data.desc &&
+                      watch("status") === data.status)
                   }
                   className="text-white bg-blue-500 w-full rounded p-2 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
                 >
