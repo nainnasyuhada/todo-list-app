@@ -79,3 +79,7 @@ The to-do list is automatically sorted by status:
 
 The to-do list supports pagination, with a limit of 10 records displayed per page.
 Navigation buttons allow users to view additional pages of to-dos.
+
+### Search Title & Filter Status
+
+The to-do list also supports title and status filtering, allowing users to find to-dos more easily.
