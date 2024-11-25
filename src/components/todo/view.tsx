@@ -3,7 +3,7 @@ import { Todo, useTodoStore } from "../../stores/todo";
 import { DeleteTodo } from "./delete";
 import { EditTodo, statusList } from "./edit";
 import Moment from "react-moment";
-import { DocumentPlusIcon } from "@heroicons/react/24/outline";
+import { DocumentPlusIcon, FaceFrownIcon } from "@heroicons/react/24/outline";
 import { AddTodo } from "./add";
 
 interface SearchInputs {
@@ -96,6 +96,7 @@ export const ViewTodo: React.FC = () => {
 
   const handlePageChange = (page: number) => {
     setSelectedPage(page);
+    setPaginatedTodos(todoList.slice((page - 1) * pageLimit, page * pageLimit));
   };
 
   const [paginatedTodos, setPaginatedTodos] = useState<Todo[]>(todoList);
@@ -203,45 +204,54 @@ export const ViewTodo: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {paginatedTodos.length > 0 ? (
-              paginatedTodos.map((todo) => (
-                <tr
-                  key={todo.id}
-                  className="odd:bg-white even:bg-gray-50 hover:odd:bg-gray-100 hover:even:bg-gray-200 cursor-pointer"
-                  onClick={(e) => {
-                    if (
-                      (e.target as HTMLElement).closest("td") &&
-                      ["status", "title", "desc", "action"].some((column) =>
-                        (e.target as HTMLElement)
-                          .closest("td")
-                          ?.classList.contains(`enable-view`)
-                      )
-                    ) {
-                      openModal(todo);
-                    }
-                  }}
-                >
-                  <td className="px-6 py-3 enable-view">
-                    <StatusBadge status={todo.status} />
-                  </td>
-                  <td className="px-6 py-3 enable-view">{todo.title}</td>
-                  <td className="px-6 py-3 enable-view">{todo.desc}</td>
-                  <td
-                    className={`px-6 py-3 ${
-                      ["COMPLETED", "CANCELLED"].includes(todo.status)
-                        ? "enable-view"
-                        : ""
-                    }`}
+            {todoList.length > 0 ? (
+              paginatedTodos.length > 0 ? (
+                paginatedTodos.map((todo) => (
+                  <tr
+                    key={todo.id}
+                    className="odd:bg-white even:bg-gray-50 hover:odd:bg-gray-100 hover:even:bg-gray-200 cursor-pointer"
+                    onClick={(e) => {
+                      if (
+                        (e.target as HTMLElement).closest("td") &&
+                        ["status", "title", "desc", "action"].some((column) =>
+                          (e.target as HTMLElement)
+                            .closest("td")
+                            ?.classList.contains(`enable-view`)
+                        )
+                      ) {
+                        openModal(todo);
+                      }
+                    }}
                   >
-                    {["IN_PROGRESS", "TO_DO"].includes(todo.status) && (
-                      <div className="flex items-center gap-2">
-                        <EditTodo data={todo} />
-                        <DeleteTodo id={todo.id} />
-                      </div>
-                    )}
-                  </td>
-                </tr>
-              ))
+                    <td className="px-6 py-3 enable-view">
+                      <StatusBadge status={todo.status} />
+                    </td>
+                    <td className="px-6 py-3 enable-view">{todo.title}</td>
+                    <td className="px-6 py-3 enable-view">{todo.desc}</td>
+                    <td
+                      className={`px-6 py-3 ${
+                        ["COMPLETED", "CANCELLED"].includes(todo.status)
+                          ? "enable-view"
+                          : ""
+                      }`}
+                    >
+                      {["IN_PROGRESS", "TO_DO"].includes(todo.status) && (
+                        <div className="flex items-center gap-2">
+                          <EditTodo data={todo} />
+                          <DeleteTodo id={todo.id} />
+                        </div>
+                      )}
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <td colSpan={4} className="py-5">
+                  <div className="flex flex-col items-center gap-3 py-5">
+                    <FaceFrownIcon className="h-6 w-6 text-gray-500" />
+                    <text>No result found</text>
+                  </div>
+                </td>
+              )
             ) : (
               // Empty List
               <td colSpan={4} className="py-5">
@@ -267,7 +277,7 @@ export const ViewTodo: React.FC = () => {
               </span>{" "}
               of{" "}
               <span className="font-semibold text-gray-900 ">
-                {paginatedTodos.length}
+                {todoList.length}
               </span>
             </span>
             <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
